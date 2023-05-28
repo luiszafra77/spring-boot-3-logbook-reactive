@@ -1,0 +1,17 @@
+logbook:
+  exclude:
+    - /auth/**
+    - /actuator/**
+    - /favicon.ico
+    - /swagger-ui/**
+    - /swagger-resources/**
+    - /v3/api-docs
+  obfuscate:
+    headers:
+      - Authorization
+      - X-Secret
+    parameters:
+      - access_token
+      - password
+  write:
+    chunk-size: 5000

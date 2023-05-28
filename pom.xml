@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.0</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>org.lzh.logbook</groupId>
+    <artifactId>spring-boot-3-logbook-reactive</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+    <name>logbook</name>
+
+    <modules>
+        <module>logbook-configuration</module>
+        <module>observability-configuration</module>
+        <module>service1</module>
+        <module>service2</module>
+    </modules>
+
+    <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
+        <!-- java and maven compiler -->
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <logbook.version>3.0.0</logbook.version>
+        <micrometer-context-propagation.version>1.0.2</micrometer-context-propagation.version>
+        <loki-logback-appender.version>1.4.0</loki-logback-appender.version>
+        <lombok-maven-plugin.version>1.18.20.0</lombok-maven-plugin.version>
+        <spotless-maven-plugin.version>2.36.0</spotless-maven-plugin.version>
+
+        <googleJavaFormat.version>1.16.0</googleJavaFormat.version>
+        <spotless.goal>check</spotless.goal>
+        <spotless.phase>compile</spotless.phase>
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.zalando</groupId>
+                <artifactId>logbook-bom</artifactId>
+                <version>${logbook.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.lzh.logbook</groupId>
+                <artifactId>logbook-configuration</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.lzh.logbook</groupId>
+                <artifactId>observability-configuration</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>context-propagation</artifactId>
+                <version>${micrometer-context-propagation.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok-maven-plugin</artifactId>
+                    <version>${lombok-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>${spotless-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <configuration>
+                    <pom>
+                        <sortPom>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <expandEmptyElements>false</expandEmptyElements>
+                            <keepBlankLines>true</keepBlankLines>
+                            <nrOfIndentSpace>4</nrOfIndentSpace>
+                            <indentSchemaLocation>true</indentSchemaLocation>
+                            <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
+                        </sortPom>
+                    </pom>
+                    <java>
+                        <removeUnusedImports/>
+                        <googleJavaFormat>
+                            <style>GOOGLE</style>
+                            <reflowLongStrings>true</reflowLongStrings>
+                            <groupArtifact>com.google.googlejavaformat:google-java-format</groupArtifact>
+                            <version>${googleJavaFormat.version}</version>
+                        </googleJavaFormat>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>spotless-check</id>
+                        <goals>
+                            <goal>${spotless.goal}</goal>
+                        </goals>
+                        <phase>${spotless.phase}</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
